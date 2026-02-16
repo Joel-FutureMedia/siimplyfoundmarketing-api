@@ -11,3 +11,4 @@ public interface NewsletterRepository extends JpaRepository<Newsletter, Long> {
     List<Newsletter> findAllByOrderByCreatedAtDesc();
 }
 
+

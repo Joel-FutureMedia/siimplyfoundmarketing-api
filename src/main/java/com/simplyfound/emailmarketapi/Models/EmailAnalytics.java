@@ -31,3 +31,4 @@ public class EmailAnalytics {
     private LocalDateTime openedAt;
 }
 
+

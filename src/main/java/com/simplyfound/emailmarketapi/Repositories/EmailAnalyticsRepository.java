@@ -19,3 +19,4 @@ public interface EmailAnalyticsRepository extends JpaRepository<EmailAnalytics, 
     long countDistinctNewsletters();
 }
 
+

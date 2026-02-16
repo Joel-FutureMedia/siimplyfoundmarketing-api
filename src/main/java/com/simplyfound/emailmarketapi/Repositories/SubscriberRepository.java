@@ -15,3 +15,4 @@ public interface SubscriberRepository extends JpaRepository<Subscriber, Long> {
     long countBySubscribedFalse();
 }
 
+

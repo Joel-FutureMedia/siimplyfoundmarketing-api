@@ -15,3 +15,4 @@ public interface ScheduledEmailRepository extends JpaRepository<ScheduledEmail, 
     List<ScheduledEmail> findBySentFalseOrderByScheduledAtAsc();
 }
 
+

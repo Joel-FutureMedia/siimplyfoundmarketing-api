@@ -18,7 +18,7 @@ public class CorsConfig {
         config.addAllowedOrigin("https://email.simplyfound.com.na");
         config.addAllowedOrigin("https://emailmarketin.simplyfound.com.na");
         config.addAllowedOrigin("https://www.simplyfound.com.na");
-        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("https://simplyfound.com.na");
         config.addAllowedOrigin("http://localhost:3007");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");

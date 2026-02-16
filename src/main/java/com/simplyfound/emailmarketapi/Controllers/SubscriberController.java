@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.constraints.Email;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,19 +21,35 @@ public class SubscriberController {
     private final SubscriberService subscriberService;
 
     @PostMapping("/subscribe")
-    public ResponseEntity<Map<String, Object>> subscribe(@RequestParam @Email String email) {
+    public ResponseEntity<Map<String, Object>> subscribe(@RequestBody Map<String, String> request) {
         try {
-            Subscriber subscriber = subscriberService.subscribe(email);
+            String email = request.get("email");
+            
+            if (email == null || email.trim().isEmpty()) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("success", false);
+                response.put("message", "Email is required");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            Subscriber subscriber = subscriberService.subscribe(email.trim());
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Successfully subscribed");
             response.put("subscriber", subscriber);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
+            log.error("Error subscribing email", e);
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            log.error("Unexpected error subscribing email", e);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "An error occurred while processing your request");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

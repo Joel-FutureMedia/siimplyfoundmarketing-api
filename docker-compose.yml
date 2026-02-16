@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: emailmarket-postgres
+    environment:
+      POSTGRES_DB: simplyfound
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Kalimbwejoel
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: emailmarket-api
+    ports:
+      - "8585:8585"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/simplyfound
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Kalimbwejoel
+      SPRING_MAIL_HOST: mail.simplyfound.com.na
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: info@simplyfound.com.na
+      SPRING_MAIL_PASSWORD: Simplyfound@2026
+      SPRING_MAIL_FROM: info@simplyfound.com.na
+      APP_BASE_URL: http://localhost:8585/api/music/view
+      JAVA_OPTS: "-Xms256m -Xmx1024m"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  uploads_data:
+
